@@ -13,4 +13,4 @@ Features: Depending on the difficulty, there will be more mines in a given field
 2. Data structures for storing game status: we will use 2D-array to store mines in the field
 3. Dynamic memory management: (to be added)
 4. File input/output (e.g., for loading/saving game status): (to be added)
-5. Program codes in multiple files: (to bea added)
+5. Program codes in multiple files: (to be added)
