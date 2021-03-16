@@ -6,7 +6,7 @@ Group nember: Yiu Ka Chun, Oh Seungwoo
 
 Introduction: We are going to make a classical game called Minesweeper using C++. 
 
-Game Rules: the rule of the game is finding all the mines without detonating by using the number on a block shows the number of mines adjacent to it.
+Game Rules: the rule of the game is finding all the mines without detonating by using the number on a block which shows the number of mines adjacent to it.
 
 Features: Depending on the difficulty, there will be more mines in a given field. We plan to offer three difficulty level: easy, medium, and hard.
 1. Generation of random game sets or events: We will randomly assign mines in the field.
