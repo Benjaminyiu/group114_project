@@ -6,14 +6,23 @@ using namespace std;
 
 #define BOMB "\xF0\x9F\x92\xA3"
 #define BLANK
+const int size_easy = 10;
+const int size_medium = 16;
+const int size_hard_height = 20;
+const int size_hard_width = 24;
+const int bomb_easy = 10;
+const int bomb_medium = 40;
+const int bomb_hard = 99;
+
 void main_page(){
-  	int option = 1;
+    int option = 1;
 
   	cout << "--------------------Welcome to Minesweeper!--------------------" << endl;
   	cout << " ___________________________________ " << endl;
   	cout << "|  " << BOMB << "          " << BOMB << "                   |" << endl;
   	cout << "|                  " << BOMB << "               |" << endl;
-  	cout << endl;
+    cout << " ___________________________________ " << endl;
+    cout << endl;
   	cout << "1. Play Game" << endl;
   	cout << "2. Instructions" << endl;
   	cout << "3. View Top 10 Players" << endl;
@@ -57,10 +66,13 @@ void main_page(){
 			cout << "\n";
 		}
   	}
-	
+
   	else if (option == 2){
     	// display instructions
-    	cout << "Each Minesweeper game starts out with a grid of unmarked squares. After clicking one of these squares, some of the squares will disappear, some will remain blank, and some will have numbers on them. It's your job to use the numbers to figure out which of the blank squares have mines and which are safe to click." << endl;
+    	cout << "Each Minesweeper game starts out with a grid of unmarked squares." << endl;
+      cout << "After clicking one of these squares, some of the squares will disappear," << endl;
+      cout << "some will remain blank, and some will have numbers on them." << endl;
+      cout << "It's your job to use the numbers to figure out which of the blank squares have mines and which are safe to click." << endl << endl;
   	}
   	else if (option == 3){
     	// load ranking from rank.txt
