@@ -2,6 +2,7 @@
 #include <cstdlib>
 #include <ctime>
 #include <random>
+#include <fstream>
 using namespace std;
 
 #define BOMB "\xF0\x9F\x92\xA3"
@@ -45,8 +46,10 @@ void main_page(){
 		// creating the board, random seeds for setting number of mines
 		int size = 9; // board size e.g. 10 means 10x10
 		int board[size][size];
-		int mines = rand() % 14 + 1;
+		int minmines = 13;	// setting minimum number of mines
+		int mines = rand() % 14 + minmines; // setting number of mines 
 
+		ofstream fout("Cheatboard.txt");
 		// setting mines in the board
 		for (int i = 0; i < size; i++) {
 			int lim = dis2(gen); // generating random number between 1 and 2
@@ -54,25 +57,25 @@ void main_page(){
 				int ran = dis1(gen);	// generating random number between 0 and 1
 				if (ran == 1 && mines > 0 and lim > 0) {
 					board[i][j] = 0;	// 0 = mine
-					cout << board[i][j] << " ";
+					fout << 0 << " ";
 					mines -= 1;
 					lim--;
 				}
 				else {
 					board[i][j] = 1;	// 1 = no mine
-					cout << board[i][j] << " ";
+					fout << 1 << " ";
 				}
 			}
-			cout << "\n";
+			fout << "\n";
 		}
   	}
 
   	else if (option == 2){
     	// display instructions
     	cout << "Each Minesweeper game starts out with a grid of unmarked squares." << endl;
-      cout << "After clicking one of these squares, some of the squares will disappear," << endl;
-      cout << "some will remain blank, and some will have numbers on them." << endl;
-      cout << "It's your job to use the numbers to figure out which of the blank squares have mines and which are safe to click." << endl << endl;
+      	cout << "After clicking one of these squares, some of the squares will disappear," << endl;
+      	cout << "some will remain blank, and some will have numbers on them." << endl;
+      	cout << "It's your job to use the numbers to figure out which of the blank squares have mines and which are safe to click." << endl << endl;
   	}
   	else if (option == 3){
     	// load ranking from rank.txt
