@@ -11,19 +11,16 @@ const int size_easy = 10;
 const int size_medium = 16;
 const int size_hard_height = 20;
 const int size_hard_width = 24;
-const int bomb_easy = 10;
-const int bomb_medium = 40;
-const int bomb_hard = 99;
 
-void printBoard(int b[][size_easy]) {
+void printBoard(int b[][size_easy], int p_b[][size_easy]) {
     cout << "  0 1 2 3 4 5 6 7 8 9" << endl;
         for (int i = 0; i < size_easy; i++) {
             cout << i << " ";
             for (int j = 0; j < size_easy; j++) {
-                if (b[i][j] == 0)
-                    cout << BOMB << " ";
+                if (p_b[i][j] == 1)
+                    cout << b[i][j] << " ";
                 else
-                    cout << "  ";
+                    cout << "_ ";
             }
             cout << endl;
         }
@@ -60,9 +57,9 @@ void main_page(){
 		    // creating the board, random seeds for setting number of mines
 		    int size = 9; // board size e.g. 10 means 10x10
 		    int board[size_easy][size_easy];
+        int player_board[size_easy][size_easy];
 		    int minmines = 13;	// setting minimum number of mines
 		    int mines = rand() % 14 + minmines; // setting number of mines
-
 		    ofstream fout("Cheatboard.txt");
 		    // setting mines in the board
 		    for (int i = 0; i < size_easy; i++) {
@@ -85,7 +82,11 @@ void main_page(){
 		    }
         fout.close();
 
-        printBoard(board);
+        for (int i = 0; i < size_easy; i++)
+          for (int j = 0; j < size_easy; j++)
+            player_board[i][j] = 0;
+        
+        printBoard(board, player_board);
   	}
 
   	else if (option == 2){
