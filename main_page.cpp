@@ -17,7 +17,7 @@ void printBoard(int b[][size_easy], int p_b[][size_easy]) {
         for (int i = 0; i < size_easy; i++) {
             cout << i << " ";
             for (int j = 0; j < size_easy; j++) {
-                if (p_b[i][j] == 1)
+                if (p_b[i][j] == 1)   // 1 represents a selected grid
                     cout << b[i][j] << " ";
                 else
                     cout << "_ ";
@@ -81,12 +81,48 @@ void main_page(){
 
 		    }
         fout.close();
+        ofstream fout2("Cheatboard.txt", ios::app);
+        for (int i = 0; i < size_easy; i++) {
+          for (int j = 0; j < size_easy; j++) {
+            if (board[i][j] == 1) {
+              int count = 1;
+              for (int m = i - 1; m <= i + 1; m++)
+                for (int n = j - 1; n <= j + 1; n++)
+                  if (m >= 0 && m < size_easy && n >= 0 && n < size_easy)
+                    if (board[m][n] == 0)
+                      count++;
+              board[i][j] = count;
+              fout2 << count << " ";
+            }
+            else
+              fout2 << 0 << " ";
 
-        for (int i = 0; i < size_easy; i++)
-          for (int j = 0; j < size_easy; j++)
-            player_board[i][j] = 0;
-        
-        printBoard(board, player_board);
+          }
+          fout2 << endl;
+        }
+        fout2.close();
+        int availGrid = 0;
+        for (int i = 0; i < size_easy; i++)     // initialising player_board value
+          for (int j = 0; j < size_easy; j++) { // 0 denotes available grid
+            player_board[i][j] = 0;             // that can be chosen by the player
+            if (board[i][j] == 1)
+              availGrid++;
+          }
+
+        int win = 0;
+        while (!win && availGrid > 0) {
+          int x, y;
+          printBoard(board, player_board);
+          cout << endl << "Please input the coordinates of the grid you want to hit on: ";
+          cin >> y >> x;
+          while (player_board[y][x] == 1 || y < 0 || y > 9 || x < 0 || y > 9) {
+            cout << "Incorrect input! Plese input again: ";
+            cin >> y >> x;
+          }
+          player_board[y][x] = 1;
+          availGrid--;
+        }
+
   	}
 
   	else if (option == 2){
