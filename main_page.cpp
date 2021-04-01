@@ -12,18 +12,74 @@ const int size_medium = 16;
 const int size_hard_height = 20;
 const int size_hard_width = 24;
 
+int bombnum(int b[][size_easy], int x, int y) {		// count bombs nearby (not finished)
+	int tempx = x;
+	int tempy = y;
+	int cnt = 0;
+	for (int i = -1; i < 2; i++) {
+		for (int j = -1; j < 2; j++) {
+			if (i == 0 && j == 0) {
+				continue;
+			}
+			x = tempx;
+			y = tempy;
+
+			x += j;
+			y += i;
+			if (b[y][x] == 0) {
+				cnt++;
+			}
+		}
+	}
+	return cnt;
+}
 void printBoard(int b[][size_easy], int p_b[][size_easy]) {
     cout << "  0 1 2 3 4 5 6 7 8 9" << endl;
         for (int i = 0; i < size_easy; i++) {
             cout << i << " ";
             for (int j = 0; j < size_easy; j++) {
-                if (p_b[i][j] == 1)   // 1 represents a selected grid
-                    cout << b[i][j] << " ";
+                if (p_b[i][j] == 1)
+                    
+					if (b[i][j] == 0) {
+						cout << BOMB << " ";
+					}
+					else {
+								// print bomb numbers
+						cout << b[i][j] << " ";
+					}
                 else
                     cout << "_ ";
             }
             cout << endl;
         }
+}
+
+void scan(int b[][size_easy], int p_b[][size_easy], int x, int y) {	// scan nearby tiles and reveal if there is no bomb
+	int tempx = x;
+	int tempy = y;
+
+	for (int i = -1; i < 2; i++) {
+
+		for (int j = -1; j < 2; j++) {
+			if (i == 0 && j == 0) {
+				continue;
+			}
+			x = tempx;
+			y = tempy;
+			
+			x += j;
+			y += i;
+			if (x >= 0 && x < size_easy && y >= 0 && y < size_easy) {
+				if (p_b[y][x] != 1 && b[y][x] != 0){
+					p_b[y][x] = 1;
+					scan(b, p_b, x, y);
+				}
+				else {
+					return;
+				}
+			}
+		}
+	}
 }
 
 void main_page(){
@@ -46,7 +102,9 @@ void main_page(){
   	if (option == 1){
 		      // init game
 		    cout << "\n";
-        srand((unsigned) time(0));
+        	srand((unsigned) time(0));
+
+			int difficulty = size_easy;
 
 		    // random seeds for setting mines in the board
 		    random_device rd;
@@ -57,10 +115,12 @@ void main_page(){
 		    // creating the board, random seeds for setting number of mines
 		    int size = 9; // board size e.g. 10 means 10x10
 		    int board[size_easy][size_easy];
-        int player_board[size_easy][size_easy];
+        	int player_board[size_easy][size_easy];
 		    int minmines = 13;	// setting minimum number of mines
 		    int mines = rand() % 14 + minmines; // setting number of mines
 		    ofstream fout("Cheatboard.txt");
+
+
 		    // setting mines in the board
 		    for (int i = 0; i < size_easy; i++) {
 			      int lim = dis2(gen); // generating random number between 1 and 2
@@ -78,51 +138,54 @@ void main_page(){
 				        }
 			      }
 			      fout << "\n";
-
+				
 		    }
-        fout.close();
-        ofstream fout2("Cheatboard.txt", ios::app);
-        for (int i = 0; i < size_easy; i++) {
-          for (int j = 0; j < size_easy; j++) {
-            if (board[i][j] == 1) {
-              int count = 1;
-              for (int m = i - 1; m <= i + 1; m++)
-                for (int n = j - 1; n <= j + 1; n++)
-                  if (m >= 0 && m < size_easy && n >= 0 && n < size_easy)
-                    if (board[m][n] == 0)
-                      count++;
-              board[i][j] = count;
-              fout2 << count << " ";
-            }
-            else
-              fout2 << 0 << " ";
+        	fout.close();
 
-          }
-          fout2 << endl;
-        }
-        fout2.close();
-        int availGrid = 0;
-        for (int i = 0; i < size_easy; i++)     // initialising player_board value
-          for (int j = 0; j < size_easy; j++) { // 0 denotes available grid
-            player_board[i][j] = 0;             // that can be chosen by the player
-            if (board[i][j] == 1)
-              availGrid++;
-          }
+        for (int i = 0; i < size_easy; i++)
+          	for (int j = 0; j < size_easy; j++)
+            	player_board[i][j] = 0;
+        
+        printBoard(board, player_board);
 
-        int win = 0;
-        while (!win && availGrid > 0) {
-          int x, y;
-          printBoard(board, player_board);
-          cout << endl << "Please input the coordinates of the grid you want to hit on: ";
-          cin >> y >> x;
-          while (player_board[y][x] == 1 || y < 0 || y > 9 || x < 0 || y > 9) {
-            cout << "Incorrect input! Plese input again: ";
-            cin >> y >> x;
-          }
-          player_board[y][x] = 1;
-          availGrid--;
-        }
 
+
+
+
+
+		// gameplay (input)
+		int x = 0,	y = 0;
+		cout << "your input has to be separated by a space" << endl;
+		cout << "Type your input(x,y): ";
+		cin >> x >> y;
+		while (x > size_easy || x < 0 || y > size_easy || y < 0) {
+			cout << "Invalid input, try it again: ";
+			cin >> x >> y;
+		}
+		cout << endl;
+		while (board[y][x]!= 0) {
+			
+			player_board[y][x] = 1;
+			scan(board, player_board, x, y);
+			printBoard(board, player_board);
+			cout << "Type your input(x,y): ";
+			cin >> x >> y;
+			while (player_board[y][x] == 1) {
+				cout << "The chosen tile is opened already, choose another: ";
+				cin >> x >> y;
+			}
+			while (x > size_easy || x < 0 || y > size_easy || y < 0) {
+				cout << "Invalid input, try it again: ";
+				cin >> x >> y;
+			}
+
+			
+			
+			cout << endl;
+			
+		}
+		player_board[y][x] = 1;
+		printBoard(board,player_board);
   	}
 
   	else if (option == 2){
