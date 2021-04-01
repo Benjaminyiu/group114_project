@@ -82,6 +82,19 @@ void scan(int b[][size_easy], int p_b[][size_easy], int x, int y) {	// scan near
 	}
 }
 
+bool winning(int b[][size_easy], int p_b[][size_easy]) {	// check winning conditions
+	
+	for (int i = 0; i < size_easy; i++) {
+		for (int j = 0; j < size_easy; j++) {
+			if (b[i][j] == 1 && p_b[i][j] != 1) {
+				return false;
+			}
+		}
+	}
+	return true;
+
+}
+
 void main_page(){
     int option = 1;
 
@@ -167,6 +180,10 @@ void main_page(){
 			
 			player_board[y][x] = 1;
 			scan(board, player_board, x, y);
+			if (winning(board,player_board)) {
+				cout << "You won! Congratulations!!!" << endl;
+				break;
+			};
 			printBoard(board, player_board);
 			cout << "Type your input(x,y): ";
 			cin >> x >> y;
