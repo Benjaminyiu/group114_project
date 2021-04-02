@@ -151,6 +151,11 @@ void main_page(){
 
 		int difficulty = size_easy;
 
+		// rank-related
+		string name;
+		time_t t1, t2;
+		t1 = time(NULL);
+
 		// random seeds for setting mines in the board
 		random_device rd;
 		mt19937 gen(rd());
@@ -197,10 +202,6 @@ void main_page(){
 		// gameplay (input)
 		int x = 0,	y = 0, score = 0;
 
-		string name;
-		clock_t t;
-		t = clock();
-
 		cout << "your input has to be separated by a space" << endl;
 		cout << "Type your input(x,y): ";
 		cin >> x >> y;
@@ -217,7 +218,8 @@ void main_page(){
 				cout << "You won! Congratulations!!!" << endl;
 
 				// score display and rank creation (more to be added)
-				score = 1000 - int ((clock() - t)/CLOCKS_PER_SEC);
+				t2 = time(NULL);
+				score = 1000 - (t2 - t1);
 				if (score < 10)
 					score = 10;
 				cout << "Your score is " << score << "!" << endl;
@@ -247,7 +249,7 @@ void main_page(){
 		player_board[y][x] = 1;
 		printBoard(board,player_board);
 
-		}
+	}
 
   	else if (option == 2){
     	// display instructions
