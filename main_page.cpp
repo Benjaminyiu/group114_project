@@ -224,7 +224,7 @@ void main_page(){
 					score = 10;
 				cout << "Your score is " << score << "!" << endl;
 				cout << "Input your nickname to store your record: ";
-				cin >> name;
+				getline(cin, name);
 
 				break;
 			};
