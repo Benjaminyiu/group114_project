@@ -33,7 +33,35 @@ int bombnum(int b[][size_easy], int x, int y) {		// count bombs nearby (not fini
 	}
 	return cnt;
 }
-void printBoard(int b[][size_easy], int p_b[][size_easy]) {
+
+int numbering(int b[][size_easy], int x, int y) {
+	int tempx = x;
+	int tempy = y;
+	int cnt = 0;
+	for (int i = -1; i < 2; i++) {
+
+		for (int j = -1; j < 2; j++) {
+			if (i == 0 && j == 0) {
+				continue;
+			}
+			x = tempx;
+			y = tempy;
+			
+			x += j;
+			y += i;
+			if (x >= 0 && x < size_easy && y >= 0 && y < size_easy) {
+				if (b[y][x] == 0){
+					cnt++;
+				}
+			}
+		}
+	}
+	return cnt;
+	
+
+}
+
+void printBoard(int b[][size_easy], int p_b[][size_easy]) {		// print board
     cout << "  0 1 2 3 4 5 6 7 8 9" << endl;
         for (int i = 0; i < size_easy; i++) {
             cout << i << " ";
@@ -45,7 +73,8 @@ void printBoard(int b[][size_easy], int p_b[][size_easy]) {
 					}
 					else {
 								// print bomb numbers
-						cout << b[i][j] << " ";
+						int bombnum = numbering(b, j, i);
+						cout << bombnum << " ";
 					}
                 else
                     cout << "_ ";
@@ -69,7 +98,7 @@ void scan(int b[][size_easy], int p_b[][size_easy], int x, int y) {	// scan near
 			
 			x += j;
 			y += i;
-			if (x >= 0 && x < size_easy && y >= 0 && y < size_easy) {
+			if (x >= 0 && x < size_easy && y >= 0 && y < size_easy) {	// setting numbers on tiles
 				if (p_b[y][x] != 1 && b[y][x] != 0){
 					p_b[y][x] = 1;
 					scan(b, p_b, x, y);
@@ -81,6 +110,7 @@ void scan(int b[][size_easy], int p_b[][size_easy], int x, int y) {	// scan near
 		}
 	}
 }
+
 
 bool winning(int b[][size_easy], int p_b[][size_easy]) {	// check winning conditions
 	
