@@ -9,8 +9,8 @@ using namespace std;
 #define BLANK
 const int size_easy = 10;
 const int size_medium = 16;
-const int size_hard_height = 20;
-const int size_hard_width = 24;
+const int size_hard = 20;
+
 
 int bombnum(int **b, int x, int y) {		// count bombs nearby (not finished)
 	int tempx = x;
@@ -191,19 +191,19 @@ void main_page(){
 			int min, max; // setting minimum and maximum number of mines in each row
 			switch(difficulty) {
 				case 1:
-					size = 10;
+					size = size_easy;
 					minmines = 13;	// setting minimum number of mines
 					min = 1;
 					max = 2;
 					break;
 				case 2:
-					size = 16;
+					size = size_medium;
 					minmines = 64;	// setting minimum number of mines
 					min = 3;
 					max = 6;
 					break;
 				case 3:
-					size = 20;
+					size = size_hard;
 					minmines = 190;	// setting minimum number of mines
 					min = 9;
 					max = 18;
