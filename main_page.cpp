@@ -73,7 +73,7 @@ void printBoard(int **b, int **p_b, int size) {		// print board
 			if (p_b[i][j] == 1)
 				
 				if (b[i][j] == 0) {
-					cout << left << setw(3) << BOMB;
+					cout << left << setw(3) << BOMB << " ";
 				}
 				else {
 							// print bomb numbers
