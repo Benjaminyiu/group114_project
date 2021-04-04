@@ -169,26 +169,49 @@ void main_page(){
         	srand((unsigned) time(0));
 
 			int size; // board size e.g. 10 means 10x10
-			int difficulty;
+			int difficulty = 0;
 			// setting difficulty
 			cout << "1. Easy" << endl;
 			cout << "2. Medium" << endl;
 			cout << "3. Hard" << endl;
 			cout << "Please input 1, 2 or 3 to select difficulty: ";
 			cin >> difficulty;
+			
+			while(difficulty > 3 || difficulty < 1 || cin.fail())  {
+				cin.clear();
+				cin.ignore(INT_MAX, '\n'); // ignore last input
+				cout << "Invalid input, please input 1, 2 or 3: ";
+				cin >> difficulty;
+			}
+			int minmines = 13;
 
+
+
+			
+			int min, max; // setting minimum and maximum number of mines in each row
 			switch(difficulty) {
 				case 1:
 					size = 10;
+					minmines = 13;	// setting minimum number of mines
+					min = 1;
+					max = 2;
 					break;
 				case 2:
 					size = 16;
+					minmines = 64;	// setting minimum number of mines
+					min = 3;
+					max = 6;
 					break;
 				case 3:
 					size = 20;
+					minmines = 190;	// setting minimum number of mines
+					min = 9;
+					max = 18;
 					break;
 			}
-	
+
+			int mines = rand() % 14 + minmines; // setting number of mines
+
 			int** board = new int*[size];
 			int** player_board = new int*[size];
 			for(int i = 0; i < size; ++i) {
@@ -196,17 +219,17 @@ void main_page(){
 				player_board[i] = new int[size];
 			}
 			
-		    // random seeds for setting mines in the board
+		    
+			// random seeds for setting mines in the board
 		    random_device rd;
 		    mt19937 gen(rd());
 		    uniform_int_distribution<> dis1(1, 2);
-		    uniform_int_distribution<> dis2(1, 2); // limiting mine numbers in a row
+			uniform_int_distribution<> dis2(min, max); // limiting mine numbers in a row
 
 		    // creating the board, random seeds for setting number of mines
 		    
 		    
-		    int minmines = 13;	// setting minimum number of mines
-		    int mines = rand() % 14 + minmines; // setting number of mines
+		    
 		    ofstream fout("Cheatboard.txt");
 
 
