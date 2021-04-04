@@ -12,7 +12,7 @@ const int size_medium = 16;
 const int size_hard_height = 20;
 const int size_hard_width = 24;
 
-int bombnum(int b[][size_easy], int x, int y) {		// count bombs nearby (not finished)
+int bombnum(int **b, int x, int y) {		// count bombs nearby (not finished)
 	int tempx = x;
 	int tempy = y;
 	int cnt = 0;
@@ -34,7 +34,7 @@ int bombnum(int b[][size_easy], int x, int y) {		// count bombs nearby (not fini
 	return cnt;
 }
 
-int numbering(int b[][size_easy], int x, int y) {
+int numbering(int **b, int x, int y, int size) {
 	int tempx = x;
 	int tempy = y;
 	int cnt = 0;
@@ -49,7 +49,7 @@ int numbering(int b[][size_easy], int x, int y) {
 			
 			x += j;
 			y += i;
-			if (x >= 0 && x < size_easy && y >= 0 && y < size_easy) {
+			if (x >= 0 && x < size && y >= 0 && y < size) {
 				if (b[y][x] == 0){
 					cnt++;
 				}
@@ -61,29 +61,33 @@ int numbering(int b[][size_easy], int x, int y) {
 
 }
 
-void printBoard(int b[][size_easy], int p_b[][size_easy]) {		// print board
-    cout << "  0 1 2 3 4 5 6 7 8 9" << endl;
-        for (int i = 0; i < size_easy; i++) {
-            cout << i << " ";
-            for (int j = 0; j < size_easy; j++) {
-                if (p_b[i][j] == 1)
-                    
-					if (b[i][j] == 0) {
-						cout << BOMB << " ";
-					}
-					else {
-								// print bomb numbers
-						int bombnum = numbering(b, j, i);
-						cout << bombnum << " ";
-					}
-                else
-                    cout << "_ ";
-            }
-            cout << endl;
-        }
+void printBoard(int **b, int **p_b, int size) {		// print board
+    cout << "   ";
+	for (int i = 0; i < size; i++) {
+		cout << left << setw(3) << i;
+	}
+	cout << endl;
+	for (int i = 0; i < size; i++) {
+		cout << left << setw(3) << i;
+		for (int j = 0; j < size; j++) {
+			if (p_b[i][j] == 1)
+				
+				if (b[i][j] == 0) {
+					cout << left << setw(3) << BOMB;
+				}
+				else {
+							// print bomb numbers
+					int bombnum = numbering(b, j, i, size);
+					cout << left << setw(3) << bombnum;
+				}
+			else
+				cout << "_  ";
+		}
+		cout << endl;
+	}
 }
 
-void scan(int b[][size_easy], int p_b[][size_easy], int x, int y) {	// scan nearby tiles and reveal if there is no bomb
+void scan(int **b, int **p_b, int x, int y, int size) {	// scan nearby tiles and reveal if there is no bomb
 	int tempx = x;
 	int tempy = y;
 
@@ -98,24 +102,41 @@ void scan(int b[][size_easy], int p_b[][size_easy], int x, int y) {	// scan near
 			
 			x += j;
 			y += i;
-			if (x >= 0 && x < size_easy && y >= 0 && y < size_easy) {	// setting numbers on tiles
-				if (p_b[y][x] != 1 && b[y][x] != 0){
-					p_b[y][x] = 1;
-					scan(b, p_b, x, y);
-				}
-				else {
+			if (x >= 0 && x < size && y >= 0 && y < size) {	// setting numbers on tiles
+				if (p_b[y][x] != 1 && b[y][x] == 0){
 					return;
 				}
 			}
 		}
 	}
+	for (int i = -1; i < 2; i++) {
+
+		for (int j = -1; j < 2; j++) {
+			if (i == 0 && j == 0) {
+				continue;
+			}
+			x = tempx;
+			y = tempy;
+			
+			x += j;
+			y += i;
+			if (x >= 0 && x < size && y >= 0 && y < size) {	// setting numbers on tiles
+				if (p_b[y][x] != 1){
+					p_b[y][x] = 1;
+					scan(b, p_b, x, y, size);
+				}
+			}
+		}
+	}
+	
+	
 }
 
 
-bool winning(int b[][size_easy], int p_b[][size_easy]) {	// check winning conditions
+bool winning(int **b, int **p_b, int size) {	// check winning conditions
 	
-	for (int i = 0; i < size_easy; i++) {
-		for (int j = 0; j < size_easy; j++) {
+	for (int i = 0; i < size; i++) {
+		for (int j = 0; j < size; j++) {
 			if (b[i][j] == 1 && p_b[i][j] != 1) {
 				return false;
 			}
@@ -147,27 +168,52 @@ void main_page(){
 		    cout << "\n";
         	srand((unsigned) time(0));
 
-			int difficulty = size_easy;
+			int size; // board size e.g. 10 means 10x10
+			int difficulty;
+			// setting difficulty
+			cout << "1. Easy" << endl;
+			cout << "2. Medium" << endl;
+			cout << "3. Hard" << endl;
+			cout << "Please input 1, 2 or 3 to select difficulty: ";
+			cin >> difficulty;
 
+			switch(difficulty) {
+				case 1:
+					size = 10;
+					break;
+				case 2:
+					size = 16;
+					break;
+				case 3:
+					size = 20;
+					break;
+			}
+	
+			int** board = new int*[size];
+			int** player_board = new int*[size];
+			for(int i = 0; i < size; ++i) {
+    			board[i] = new int[size];
+				player_board[i] = new int[size];
+			}
+			
 		    // random seeds for setting mines in the board
 		    random_device rd;
 		    mt19937 gen(rd());
-		    uniform_int_distribution<> dis1(0, 1);
+		    uniform_int_distribution<> dis1(1, 2);
 		    uniform_int_distribution<> dis2(1, 2); // limiting mine numbers in a row
 
 		    // creating the board, random seeds for setting number of mines
-		    int size = 9; // board size e.g. 10 means 10x10
-		    int board[size_easy][size_easy];
-        	int player_board[size_easy][size_easy];
+		    
+		    
 		    int minmines = 13;	// setting minimum number of mines
 		    int mines = rand() % 14 + minmines; // setting number of mines
 		    ofstream fout("Cheatboard.txt");
 
 
 		    // setting mines in the board
-		    for (int i = 0; i < size_easy; i++) {
+		    for (int i = 0; i < size; i++) {
 			      int lim = dis2(gen); // generating random number between 1 and 2
-			      for (int j = 0; j < size_easy; j++) {
+			      for (int j = 0; j < size; j++) {
 				        int ran = dis1(gen);	// generating random number between 0 and 1
 				        if (ran == 1 && mines > 0 && lim > 0) {
 					          board[i][j] = 0;	// 0 = mine
@@ -185,11 +231,11 @@ void main_page(){
 		    }
         	fout.close();
 
-        for (int i = 0; i < size_easy; i++)
-          	for (int j = 0; j < size_easy; j++)
+        for (int i = 0; i < size; i++)
+          	for (int j = 0; j < size; j++)
             	player_board[i][j] = 0;
         
-        printBoard(board, player_board);
+        printBoard(board, player_board, size);
 
 
 
@@ -201,7 +247,7 @@ void main_page(){
 		cout << "your input has to be separated by a space" << endl;
 		cout << "Type your input(x,y): ";
 		cin >> x >> y;
-		while (x > size_easy || x < 0 || y > size_easy || y < 0) {
+		while (x > size || x < 0 || y > size || y < 0) {
 			cout << "Invalid input, try it again: ";
 			cin >> x >> y;
 		}
@@ -209,19 +255,19 @@ void main_page(){
 		while (board[y][x]!= 0) {
 			
 			player_board[y][x] = 1;
-			scan(board, player_board, x, y);
-			if (winning(board,player_board)) {
+			scan(board, player_board, x, y, size);
+			if (winning(board,player_board, size)) {
 				cout << "You won! Congratulations!!!" << endl;
 				break;
 			};
-			printBoard(board, player_board);
+			printBoard(board, player_board, size);
 			cout << "Type your input(x,y): ";
 			cin >> x >> y;
 			while (player_board[y][x] == 1) {
 				cout << "The chosen tile is opened already, choose another: ";
 				cin >> x >> y;
 			}
-			while (x > size_easy || x < 0 || y > size_easy || y < 0) {
+			while (x > size || x < 0 || y > size || y < 0) {
 				cout << "Invalid input, try it again: ";
 				cin >> x >> y;
 			}
@@ -232,7 +278,7 @@ void main_page(){
 			
 		}
 		player_board[y][x] = 1;
-		printBoard(board,player_board);
+		printBoard(board, player_board, size);
   	}
 
   	else if (option == 2){
