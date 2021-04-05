@@ -5,12 +5,12 @@
 #include <fstream>
 using namespace std;
 
-#define BOMB "\xF0\x9F\x92\xA3"
-#define BLANK
+#define BOMB "\xE2\x98\xA0"
+#define FLAG "\xE2\x9A\x91"
 const int size_easy = 10;
 const int size_medium = 16;
 const int size_hard = 20;
-
+const int highest_score = 2000;
 
 int bombnum(int **b, int x, int y) {		// count bombs nearby (not finished)
 	int tempx = x;
@@ -46,7 +46,7 @@ int numbering(int **b, int x, int y, int size) {
 			}
 			x = tempx;
 			y = tempy;
-			
+
 			x += j;
 			y += i;
 			if (x >= 0 && x < size && y >= 0 && y < size) {
@@ -57,7 +57,7 @@ int numbering(int **b, int x, int y, int size) {
 		}
 	}
 	return cnt;
-	
+
 
 }
 
@@ -71,9 +71,9 @@ void printBoard(int **b, int **p_b, int size) {		// print board
 		cout << left << setw(3) << i;
 		for (int j = 0; j < size; j++) {
 			if (p_b[i][j] == 1)
-				
+
 				if (b[i][j] == 0) {
-					cout << left << setw(3) << BOMB << " ";
+					cout << left << setw(3) << BOMB << "  ";
 				}
 				else {
 							// print bomb numbers
@@ -99,7 +99,7 @@ void scan(int **b, int **p_b, int x, int y, int size) {	// scan nearby tiles and
 			}
 			x = tempx;
 			y = tempy;
-			
+
 			x += j;
 			y += i;
 			if (x >= 0 && x < size && y >= 0 && y < size) {	// setting numbers on tiles
@@ -117,7 +117,7 @@ void scan(int **b, int **p_b, int x, int y, int size) {	// scan nearby tiles and
 			}
 			x = tempx;
 			y = tempy;
-			
+
 			x += j;
 			y += i;
 			if (x >= 0 && x < size && y >= 0 && y < size) {	// setting numbers on tiles
@@ -128,13 +128,13 @@ void scan(int **b, int **p_b, int x, int y, int size) {	// scan nearby tiles and
 			}
 		}
 	}
-	
-	
+
+
 }
 
 
 bool winning(int **b, int **p_b, int size) {	// check winning conditions
-	
+
 	for (int i = 0; i < size; i++) {
 		for (int j = 0; j < size; j++) {
 			if (b[i][j] == 1 && p_b[i][j] != 1) {
@@ -146,128 +146,150 @@ bool winning(int **b, int **p_b, int size) {	// check winning conditions
 
 }
 
+struct ranking {
+	string name;
+	int score;
+	string difficulty;
+};
+
+// obtain record from rank.txt
+void retrieveRecord(vector < ranking > &record, int option) {
+	int i = 0;
+	string line;
+	ifstream fin ("rank.txt");
+	record.resize(0);
+	while (i < 10) {
+		record.push_back(ranking());
+		fin >> record[i].name >> record[i].score >> record[i].difficulty;
+		i++;
+	}
+	if (option == 3) {
+		cout << left << setw(20) << "Name" << left << setw(6) << "Score" << "Difficulty" << endl;
+		for (int j = 0; j < i; j++)
+			cout << left << setw(20) << record[j].name << setw(6) << record[j].score << record[j].difficulty << endl;
+	}
+	fin.close();
+}
+
+// save record to rank.txt
+void saveRecord(vector < ranking > &record) {
+	ofstream fout ("rank.txt");
+	for (int i = 0; i < 10; i++)
+		fout << record[i].name << " " << record[i].score << " " << record[i].difficulty << endl;
+	fout.close();
+}
 void main_page(){
-    int option = 1;
+	int option = 1;
+	vector < ranking > record;
+  cout << "--------------------Welcome to Minesweeper!--------------------" << endl;
+	cout << " ___________________________________ " << endl;
+  cout << "|  " << BOMB << "          " << BOMB << "                    |" << endl;
+  cout << "|                  " << BOMB << "               |" << endl;
+  cout << " ___________________________________ " << endl;
+  cout << endl;
+  cout << "1. Play Game" << endl;
+  cout << "2. Instructions" << endl;
+  cout << "3. View Top 10 Players" << endl;
+  cout << "4. Exit Game" << endl << endl;
 
-  	cout << "--------------------Welcome to Minesweeper!--------------------" << endl;
-  	cout << " ___________________________________ " << endl;
-  	cout << "|  " << BOMB << "          " << BOMB << "                   |" << endl;
-  	cout << "|                  " << BOMB << "               |" << endl;
-    cout << " ___________________________________ " << endl;
-    cout << endl;
-  	cout << "1. Play Game" << endl;
-  	cout << "2. Instructions" << endl;
-  	cout << "3. View Top 10 Players" << endl;
-  	cout << "4. Exit Game" << endl << endl;
+  cout << "Input 1-4 to continue: ";
+  cin >> option;
 
-  	cout << "Input 1-4 to continue: ";
-  	cin >> option;
+  if (option == 1){
+		// init game
+		cout << "\n";
+		srand((unsigned) time(0));
 
-  	if (option == 1){
-		      // init game
-		    cout << "\n";
-        	srand((unsigned) time(0));
+		int size; // board size e.g. 10 means 10x10
+		int difficulty = 0;
 
-			int size; // board size e.g. 10 means 10x10
-			int difficulty = 0;
-			// setting difficulty
-			cout << "1. Easy" << endl;
-			cout << "2. Medium" << endl;
-			cout << "3. Hard" << endl;
-			cout << "Please input 1, 2 or 3 to select difficulty: ";
+		// setting difficulty
+		cout << "1. Easy" << endl;
+		cout << "2. Medium" << endl;
+		cout << "3. Hard" << endl;
+		cout << "Please input 1, 2 or 3 to select difficulty: ";
+		cin >> difficulty;
+
+		while(difficulty > 3 || difficulty < 1 || cin.fail()) {
+			cin.clear();
+			cin.ignore(INT_MAX, '\n'); // ignore last input
+			cout << "Invalid input, please input 1, 2 or 3: ";
 			cin >> difficulty;
-			
-			while(difficulty > 3 || difficulty < 1 || cin.fail())  {
-				cin.clear();
-				cin.ignore(INT_MAX, '\n'); // ignore last input
-				cout << "Invalid input, please input 1, 2 or 3: ";
-				cin >> difficulty;
+		}
+
+		int minmines = 13;
+		int min, max; // setting minimum and maximum number of mines in each row
+		switch (difficulty) {
+			case 1:
+				size = size_easy;
+				minmines = 13;	// setting minimum number of mines
+				min = 1;
+				max = 2;
+				break;
+			case 2:
+				size = size_medium;
+				minmines = 64;	// setting minimum number of mines
+				min = 3;
+				max = 6;
+				break;
+			case 3:
+				size = size_hard;
+				minmines = 190;	// setting minimum number of mines
+				min = 9;
+				max = 18;
+				break;
+		}
+
+		int mines = rand() % 14 + minmines; // setting number of mines
+
+		int** board = new int*[size];	// using dynamic 2d array to store mines
+		int** player_board = new int*[size];
+		for (int i = 0; i < size; ++i) {
+    	board[i] = new int[size];
+			player_board[i] = new int[size];
+		}
+
+		// random seeds for setting mines in the board
+		random_device rd;
+		mt19937 gen(rd());
+		uniform_int_distribution<> dis1(1, 2);
+		uniform_int_distribution<> dis2(min, max); // limiting mine numbers in a row
+
+		// creating the board, random seeds for setting number of mines
+
+		ofstream fout("Cheatboard.txt");
+
+		// setting mines in the board
+		for (int i = 0; i < size; i++) {
+			int lim = dis2(gen); // generating random number between 1 and 2
+			for (int j = 0; j < size; j++) {
+				int ran = dis1(gen);	// generating random number between 0 and 1
+				if (ran == 1 && mines > 0 && lim > 0) {
+					board[i][j] = 0;	// 0 = mine
+					fout << 0 << " ";
+					mines -= 1;
+					lim--;
+				}
+				else {
+					board[i][j] = 1;	// 1 = no mine
+					fout << 1 << " ";
+				}
 			}
-			int minmines = 13;
+			fout << "\n";
+		}
+		fout.close();
 
+		for (int i = 0; i < size; i++)
+			for (int j = 0; j < size; j++)
+				player_board[i][j] = 0;
 
-
-			
-			int min, max; // setting minimum and maximum number of mines in each row
-			switch(difficulty) {
-				case 1:
-					size = size_easy;
-					minmines = 13;	// setting minimum number of mines
-					min = 1;
-					max = 2;
-					break;
-				case 2:
-					size = size_medium;
-					minmines = 64;	// setting minimum number of mines
-					min = 3;
-					max = 6;
-					break;
-				case 3:
-					size = size_hard;
-					minmines = 190;	// setting minimum number of mines
-					min = 9;
-					max = 18;
-					break;
-			}
-
-			int mines = rand() % 14 + minmines; // setting number of mines
-
-			int** board = new int*[size];	// using dynamic 2d array to store mines
-			int** player_board = new int*[size];
-			for(int i = 0; i < size; ++i) {
-    			board[i] = new int[size];
-				player_board[i] = new int[size];
-			}
-			
-		    
-			// random seeds for setting mines in the board
-		    random_device rd;
-		    mt19937 gen(rd());
-		    uniform_int_distribution<> dis1(1, 2);
-			uniform_int_distribution<> dis2(min, max); // limiting mine numbers in a row
-
-		    // creating the board, random seeds for setting number of mines
-		    
-		    
-		    
-		    ofstream fout("Cheatboard.txt");
-
-
-		    // setting mines in the board
-		    for (int i = 0; i < size; i++) {
-			      int lim = dis2(gen); // generating random number between 1 and 2
-			      for (int j = 0; j < size; j++) {
-				        int ran = dis1(gen);	// generating random number between 0 and 1
-				        if (ran == 1 && mines > 0 && lim > 0) {
-					          board[i][j] = 0;	// 0 = mine
-					          fout << 0 << " ";
-					          mines -= 1;
-					          lim--;
-				        }
-				        else {
-					          board[i][j] = 1;	// 1 = no mine
-					          fout << 1 << " ";
-				        }
-			      }
-			      fout << "\n";
-				
-		    }
-        	fout.close();
-
-        for (int i = 0; i < size; i++)
-          	for (int j = 0; j < size; j++)
-            	player_board[i][j] = 0;
-        
-        printBoard(board, player_board, size);
-
-
-
-
+		printBoard(board, player_board, size);
 
 
 		// gameplay (input)
-		int x = 0,	y = 0;
-		cout << "your input has to be separated by a space" << endl;
+		int x = 0, y = 0, win = 0;
+		time_t t1 = time(NULL);	// define initial time before gameplay
+		cout << "Your input has to be separated by a space" << endl;
 		cout << "Type your input(x,y): ";
 		cin >> x >> y;
 		while (x > size || x < 0 || y > size || y < 0) {
@@ -275,12 +297,39 @@ void main_page(){
 			cin >> x >> y;
 		}
 		cout << endl;
-		while (board[y][x]!= 0) {
-			
+		while (board[y][x]!= 0 && !win) {
 			player_board[y][x] = 1;
 			scan(board, player_board, x, y, size);
-			if (winning(board,player_board, size)) {
+			if (winning(board, player_board, size)) {
+				time_t t2 = time(NULL); // define time after winning game
+				int score = highest_score - (t2 - t1);	// formula for score
+				if (score < 10)	// minimum score = 10
+					score = 10;
+				string name;
+				player_board[y][x] = 1;
+				printBoard(board, player_board, size);
 				cout << "You won! Congratulations!!!" << endl;
+				cout << "Your score is " << score << "." << endl;
+				cout << "Please input your name to save your record: ";
+				cin >> name;
+				cout << "Thanks for playing!" << endl;
+				string diff;
+				if (difficulty == 1)
+					diff = "Easy";
+				else if (difficulty == 2)
+					diff = "Medium";
+				else if (difficulty == 3)
+					diff = "Hard";
+				ranking new_record = {name, score, diff};
+
+				retrieveRecord(record, option);
+				for (int i = 0; i < 10; i++)
+					if (score > record[i].score) {
+						record.insert(record.begin() + i, new_record);
+						break;
+					}
+				saveRecord(record);
+				win = 1;
 				break;
 			};
 			printBoard(board, player_board, size);
@@ -295,29 +344,35 @@ void main_page(){
 				cin >> x >> y;
 			}
 
-			
-			
 			cout << endl;
-			
-		}
-		player_board[y][x] = 1;
-		printBoard(board, player_board, size);
-		delete[] board;	
-		delete[] player_board;
-  	}
 
-  	else if (option == 2){
-    	// display instructions
-    	cout << "Each Minesweeper game starts out with a grid of unmarked squares." << endl;
-      	cout << "After clicking one of these squares, some of the squares will disappear," << endl;
-      	cout << "some will remain blank, and some will have numbers on them." << endl;
-      	cout << "It's your job to use the numbers to figure out which of the blank squares have mines and which are safe to click." << endl << endl;
+		}
+
+		if (!win) {
+			player_board[y][x] = 1;
+			printBoard(board, player_board, size);
+			cout << "You lose!" << endl;
+		}
+
+		delete[] board;
+		delete[] player_board;
+	}
+
+	else if (option == 2){
+    // display instructions
+		cout << "Each Minesweeper game starts out with a grid of unmarked squares." << endl;
+		cout << "After clicking one of these squares, some of the squares will disappear," << endl;
+		cout << "some will remain blank, and some will have numbers on them." << endl;
+		cout << "It's your job to use the numbers to figure out which of the blank squares have mines and which are safe to click." << endl << endl;
 		cout << "When inputting the coordinates, you must put the row index first and then column index (row index, column index)" << endl;
 		cout << "For instance, if user input is 1 1(separated by a space), it means starting from (0,0) moving by row index 1 and column index 1 "<< endl;
-  	}
-  	else if (option == 3){
-    	// load ranking from rank.txt
-  	}
+  }
+
+	else if (option == 3){
+		// load rank info from rank.txt
+		retrieveRecord(record, option);
+
+	}
 }
 
 int main(){
