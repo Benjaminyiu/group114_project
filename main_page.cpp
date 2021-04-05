@@ -212,7 +212,7 @@ void main_page(){
 
 			int mines = rand() % 14 + minmines; // setting number of mines
 
-			int** board = new int*[size];
+			int** board = new int*[size];	// using dynamic 2d array to store mines
 			int** player_board = new int*[size];
 			for(int i = 0; i < size; ++i) {
     			board[i] = new int[size];
@@ -302,6 +302,8 @@ void main_page(){
 		}
 		player_board[y][x] = 1;
 		printBoard(board, player_board, size);
+		delete[] board;	
+		delete[] player_board;
   	}
 
   	else if (option == 2){
