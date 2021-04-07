@@ -1,8 +1,13 @@
 #include <iostream>
+#include <iomanip>
 #include <cstdlib>
 #include <ctime>
 #include <random>
+#include <string>
 #include <fstream>
+#include "instruction.h"
+#include "rank.h"
+
 using namespace std;
 
 #define BOMB "\xE2\x98\xA0"
@@ -152,32 +157,6 @@ struct ranking {
 	string difficulty;
 };
 
-// obtain record from rank.txt
-void retrieveRecord(vector < ranking > &record, int option) {
-	int i = 0;
-	string line;
-	ifstream fin ("rank.txt");
-	record.resize(0);
-	while (i < 10) {
-		record.push_back(ranking());
-		fin >> record[i].name >> record[i].score >> record[i].difficulty;
-		i++;
-	}
-	if (option == 3) {
-		cout << left << setw(20) << "Name" << left << setw(6) << "Score" << "Difficulty" << endl;
-		for (int j = 0; j < i; j++)
-			cout << left << setw(20) << record[j].name << setw(6) << record[j].score << record[j].difficulty << endl;
-	}
-	fin.close();
-}
-
-// save record to rank.txt
-void saveRecord(vector < ranking > &record) {
-	ofstream fout ("rank.txt");
-	for (int i = 0; i < 10; i++)
-		fout << record[i].name << " " << record[i].score << " " << record[i].difficulty << endl;
-	fout.close();
-}
 void main_page(){
 	int option = 1;
 	vector < ranking > record;
@@ -360,18 +339,12 @@ void main_page(){
 
 	else if (option == 2){
     // display instructions
-		cout << "Each Minesweeper game starts out with a grid of unmarked squares." << endl;
-		cout << "After clicking one of these squares, some of the squares will disappear," << endl;
-		cout << "some will remain blank, and some will have numbers on them." << endl;
-		cout << "It's your job to use the numbers to figure out which of the blank squares have mines and which are safe to click." << endl << endl;
-		cout << "When inputting the coordinates, you must put the row index first and then column index (row index, column index)" << endl;
-		cout << "For instance, if user input is 1 1(separated by a space), it means starting from (0,0) moving by row index 1 and column index 1 "<< endl;
+		printInstructions();
   }
 
 	else if (option == 3){
 		// load rank info from rank.txt
 		retrieveRecord(record, option);
-
 	}
 }
 
