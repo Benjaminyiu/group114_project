@@ -2,18 +2,13 @@
 #include <iomanip>
 #include <fstream>
 #include <string>
+#include <vector>
 #include "rank.h"
 
 using namespace std;
 
-struct ranking {
-	string name;
-	int score;
-	string difficulty;
-};
-
 // obtain record from rank.txt
-void retrieveRecord(vector < struct ranking > &record, int option) {
+void retrieveRecord(vector < ranking > &record, int option) {
 	int i = 0;
 	string line;
 	ifstream fin ("rank.txt");
@@ -32,7 +27,7 @@ void retrieveRecord(vector < struct ranking > &record, int option) {
 }
 
 // save record to rank.txt
-void saveRecord(vector < struct ranking > &record) {
+void saveRecord(vector < ranking > &record) {
 	ofstream fout ("rank.txt");
 	for (int i = 0; i < 10; i++)
 		fout << record[i].name << " " << record[i].score << " " << record[i].difficulty << endl;

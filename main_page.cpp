@@ -5,6 +5,7 @@
 #include <random>
 #include <string>
 #include <fstream>
+#include <vector>
 #include "instruction.h"
 #include "rank.h"
 
@@ -150,12 +151,6 @@ bool winning(int **b, int **p_b, int size) {	// check winning conditions
 	return true;
 
 }
-
-struct ranking {
-	string name;
-	int score;
-	string difficulty;
-};
 
 void main_page(){
 	int option = 1;

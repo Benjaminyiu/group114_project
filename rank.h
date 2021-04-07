@@ -1,9 +1,10 @@
-#include <string>
-#include <iostream>
-
 #ifndef RANK_H
 #define RANK_H
 
+#include <string>
+#include <iostream>
+
+using namespace std;
 
 struct ranking {
 	string name;
@@ -11,8 +12,8 @@ struct ranking {
 	string difficulty;
 };
 
-void retrieveRecord(vector < struct ranking > &record, int option);
+void retrieveRecord(vector < ranking > &record, int option);
 
-void saveRecord(vector < struct ranking > &record);
+void saveRecord(vector < ranking > &record);
 
 #endif
