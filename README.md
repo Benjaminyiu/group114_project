@@ -12,7 +12,7 @@ Features: Depending on the difficulty, there will be more mines in a given field
 
 Code requirements:
 1. Generation of random game sets or events: We will randomly assign mines in the field.
-2. Data structures for storing game status: We will use 2D-array to store the mines and numbers in the field.
-3. Dynamic memory management: There will be a dynamically allocated variable which will be used for setting the number of mines in a field.
-4. File input/output (e.g., for loading/saving game status): The performance of player is recognised by how much time he/she played to win the game. The faster the player wins, the higher score he/she can obtain. Players will be asked for their names and ranking will be created in descending order. This ranking will then be saved to a file so that the records won't be erased when players quit the game.
-5. Program codes in multiple files: The game would be divided into several parts to ensure scalability and easier debugging.
+2. Data structures for storing game status: We will use 2D-vector to store the mines and numbers in the field.
+3. Dynamic memory management: There will be a dynamically allocated variable which will be used for setting the number of mines in a field. The 2D-vector storing the mines and numbers allows resizable board, so that 
+4. File input/output (e.g., for loading/saving game status): The performance of player is recognised by how much time he/she played to win the game. The faster the player wins, the higher score he/she can obtain. Players will be asked for their names and ranking will be created in descending order of score. This ranking will then be saved to a file so that the records won't be erased when players quit the game.
+5. Program codes in multiple files: The game would be divided into several parts to ensure scalability and easier debugging. We divided the program into several parts, i.e. gameplay, instruction, and rank programs. They are compiled together to create an executable file game.
