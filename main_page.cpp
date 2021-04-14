@@ -154,7 +154,7 @@ bool winning(int **b, int **p_b, int size) {	// check winning conditions
 
 void main_page(){
 	int option = 1;
-	vector < ranking > record;
+	vector < ranking > record; // for saving record
   cout << "--------------------Welcome to Minesweeper!--------------------" << endl;
 	cout << " ___________________________________ " << endl;
   cout << "|  " << BOMB << "          " << BOMB << "                    |" << endl;
@@ -294,11 +294,11 @@ void main_page(){
 					diff = "Medium";
 				else if (difficulty == 3)
 					diff = "Hard";
-				ranking new_record = {name, score, diff};
-
+				ranking new_record = {name, score, diff}; // create a new record
+																									// to be stored in record vector
 				retrieveRecord(record, option);
 				for (int i = 0; i < 10; i++)
-					if (score > record[i].score) {
+					if (score > record[i].score) {	// insert record in descending order of score
 						record.insert(record.begin() + i, new_record);
 						break;
 					}
