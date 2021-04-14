@@ -67,8 +67,8 @@ int numbering(int **b, int x, int y, int size) {
 
 }
 
-void printBoard(int **b, int **p_b, int size) {		// print board
-    cout << "   ";
+void printBoard(int **b, int **p_b, vector < vector <int> > &flag, int size) {		// print board
+	cout << "   ";
 	for (int i = 0; i < size; i++) {
 		cout << left << setw(3) << i;
 	}
@@ -79,7 +79,10 @@ void printBoard(int **b, int **p_b, int size) {		// print board
 			if (p_b[i][j] == 1)
 
 				if (b[i][j] == 0) {
-					cout << left << setw(3) << BOMB << "  ";
+					if (flag[i][j] == 1)
+						cout << left << setw(3) << FLAG << "  ";
+					else
+						cout << left << setw(3) << BOMB << "  ";
 				}
 				else {
 							// print bomb numbers
@@ -257,8 +260,13 @@ void main_page(){
 			for (int j = 0; j < size; j++)
 				player_board[i][j] = 0;
 
-		printBoard(board, player_board, size);
+		vector < vector <int> > flag;		// 2d vector to indicate if
+		for (int i = 0; i < size; i++){	// a flag was placed
+			vector <int> temp (size, 0);
+			flag.push_back(temp);
+		}
 
+		printBoard(board, player_board, flag, size);
 
 		// gameplay (input)
 		int x = 0, y = 0, win = 0;
@@ -271,7 +279,28 @@ void main_page(){
 			cin >> x >> y;
 		}
 		cout << endl;
+		srand(time(NULL));
 		while (board[y][x]!= 0 && !win) {
+			int revealOneMine = rand() % 20;	// probability of having special events
+			if (revealOneMine == 0) {					// to reveal one mine = 1/20
+				int draw = rand() % 10;					// count the nth bomb location to be revealed
+				int count = 0, i = 0, j = 0;
+				for (i = 0; i < size && count < draw; ++i)
+					for (j = 0; j < size && count < draw; ++j)
+						if (board[i][j] == 0) {
+							++count;
+							if (count == draw) {
+								i--;
+								j--;
+							}
+						}
+
+				player_board[i][j] = 1;
+				flag[i][j] = 1;
+				cout << "Lucky! The grid (" << j << " " << i << ") has been revealed for you!" << endl;
+
+			}
+			cout << endl;
 			player_board[y][x] = 1;
 			scan(board, player_board, x, y, size);
 			if (winning(board, player_board, size)) {
@@ -281,7 +310,7 @@ void main_page(){
 					score = 10;
 				string name;
 				player_board[y][x] = 1;
-				printBoard(board, player_board, size);
+				printBoard(board, player_board, flag, size);
 				cout << "You won! Congratulations!!!" << endl;
 				cout << "Your score is " << score << "." << endl;
 				cout << "Please input your name to save your record: ";
@@ -306,7 +335,7 @@ void main_page(){
 				win = 1;
 				break;
 			};
-			printBoard(board, player_board, size);
+			printBoard(board, player_board, flag, size);
 			cout << "Type your input(x,y): ";
 			cin >> x >> y;
 			while (player_board[y][x] == 1) {
@@ -324,7 +353,7 @@ void main_page(){
 
 		if (!win) {
 			player_board[y][x] = 1;
-			printBoard(board, player_board, size);
+			printBoard(board, player_board, flag, size);
 			cout << "You lose!" << endl;
 		}
 
