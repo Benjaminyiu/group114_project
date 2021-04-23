@@ -281,8 +281,8 @@ void main_page(){
 		cout << endl;
 		srand(time(NULL));
 		while (board[y][x]!= 0 && !win) {
-			int revealOneMine = rand() % 20;	// probability of having special events
-			if (revealOneMine == 0) {					// to reveal one mine = 1/20
+			int revealOneMine = rand() % 5;	// probability of having special events
+			if (revealOneMine == 0) {					// to reveal one mine = 1/5
 				int draw = rand() % 10;					// count the nth bomb location to be revealed
 				int count = 0, i = 0, j = 0;
 				for (i = 0; i < size && count < draw; ++i)
@@ -324,7 +324,7 @@ void main_page(){
 				else if (difficulty == 3)
 					diff = "Hard";
 				ranking new_record = {name, score, diff}; // create a new record
-																									// to be stored in record vector
+														// to be stored in record vector
 				retrieveRecord(record, option);
 				for (int i = 0; i < 10; i++)
 					if (score > record[i].score) {	// insert record in descending order of score
