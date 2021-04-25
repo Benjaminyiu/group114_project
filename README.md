@@ -18,6 +18,6 @@ Code requirements:
 5. Program codes in multiple files: The game was divided into several parts to ensure scalability and easier debugging. We divided the program into several parts, i.e. gameplay, instruction, and rank programs. They are compiled together to create an executable file 'game'.
 
 Compilation and execution instructions: Using the bash shell, input 'make game' in the game file directory. Optional input of 'make clean' can remove intermediate object files. Then input './game' to load the game executable.
-P.S. To facilitate testing, a test file named cheatboard.txt is generated showing the locations of mines represented by 0. Commenting out lines 237, 246, 252, 255 and 257 in main_page.cpp can remove the generation of cheatboard.txt.
+P.S. To facilitate testing, a test file named cheatboard.txt is generated showing the locations of mines represented by 0. Commenting out lines 241, 250, 256, 259 and 261 in main_page.cpp can remove the generation of cheatboard.txt.
 
 Testing of program and generation of sample input/output files are done in academy11 server.
