@@ -20,4 +20,4 @@ Code requirements:
 Compilation and execution instructions: Using the bash shell, input 'make game' in the game file directory. Optional input of 'make clean' can remove intermediate object files. Then input './game' to load the game executable.
 P.S. To facilitate testing, a test file named cheatboard.txt is generated showing the locations of mines represented by 0. Commenting out lines 241, 250, 256, 259 and 261 in main_page.cpp can remove the generation of cheatboard.txt.
 
-Testing of program and generation of sample input/output files are done in academy11 server.
+Testing of program and generation of sample input/output files are done in academy11 server. 5 sample input/output files are attached. However, since the output of each gameplay may vary and rely on random factors, it may not be possible to obtain the same output for a given input every time.
