@@ -3,6 +3,7 @@
 
 using namespace std;
 
+// display instructions
 void printInstructions() {
   cout << "Each Minesweeper game starts out with a grid of unmarked squares." << endl;
   cout << "After clicking one of these squares, some of the squares will disappear," << endl;

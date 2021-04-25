@@ -18,7 +18,8 @@ const int size_medium = 16;
 const int size_hard = 20;
 const int highest_score = 2000;
 
-int bombnum(int **b, int x, int y) {		// count bombs nearby (not finished)
+// count bombs nearby
+int bombnum(int **b, int x, int y) {
 	int tempx = x;
 	int tempy = y;
 	int cnt = 0;
@@ -40,6 +41,7 @@ int bombnum(int **b, int x, int y) {		// count bombs nearby (not finished)
 	return cnt;
 }
 
+// assign numbers to each grid according the number of mines in 3X3 neighbouring
 int numbering(int **b, int x, int y, int size) {
 	int tempx = x;
 	int tempy = y;
@@ -67,7 +69,8 @@ int numbering(int **b, int x, int y, int size) {
 
 }
 
-void printBoard(int **b, int **p_b, vector < vector <int> > &flag, int size) {		// print board
+// print player's board
+void printBoard(int **b, int **p_b, vector < vector <int> > &flag, int size) {
 	cout << "   ";
 	for (int i = 0; i < size; i++) {
 		cout << left << setw(3) << i;
@@ -96,7 +99,8 @@ void printBoard(int **b, int **p_b, vector < vector <int> > &flag, int size) {		
 	}
 }
 
-void scan(int **b, int **p_b, int x, int y, int size) {	// scan nearby tiles and reveal if there is no bomb
+// scan nearby tiles and reveal if there is no bomb
+void scan(int **b, int **p_b, int x, int y, int size) {
 	int tempx = x;
 	int tempy = y;
 
@@ -141,8 +145,8 @@ void scan(int **b, int **p_b, int x, int y, int size) {	// scan nearby tiles and
 
 }
 
-
-bool winning(int **b, int **p_b, int size) {	// check winning conditions
+// check winning conditions
+bool winning(int **b, int **p_b, int size) {
 
 	for (int i = 0; i < size; i++) {
 		for (int j = 0; j < size; j++) {
@@ -374,7 +378,7 @@ void main_page(){
 
 int main(){
 
-  main_page();
+	main_page();
 
 	cout << endl << "Bye!" << endl;
 
