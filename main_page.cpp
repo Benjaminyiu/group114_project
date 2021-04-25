@@ -189,7 +189,7 @@ void main_page(){
 
 		while(difficulty > 3 || difficulty < 1 || cin.fail()) {
 			cin.clear();
-			cin.ignore(INT_MAX, '\n'); // ignore last input
+			cin.ignore(INT8_MAX, '\n'); // ignore last input
 			cout << "Invalid input, please input 1, 2 or 3: ";
 			cin >> difficulty;
 		}
@@ -274,7 +274,7 @@ void main_page(){
 		cout << "Your input has to be separated by a space" << endl;
 		cout << "Type your input(x,y): ";
 		cin >> x >> y;
-		while (x > size || x < 0 || y > size || y < 0) {
+		while (x >= size || x < 0 || y >= size || y < 0) {
 			cout << "Invalid input, try it again: ";
 			cin >> x >> y;
 		}
@@ -342,7 +342,7 @@ void main_page(){
 				cout << "The chosen tile is opened already, choose another: ";
 				cin >> x >> y;
 			}
-			while (x > size || x < 0 || y > size || y < 0) {
+			while (x >= size || x < 0 || y >= size || y < 0) {
 				cout << "Invalid input, try it again: ";
 				cin >> x >> y;
 			}
