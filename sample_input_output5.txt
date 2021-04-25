@@ -1,0 +1,26 @@
+--------------------Welcome to Minesweeper!--------------------
+ ___________________________________ 
+|  ☠          ☠                    |
+|                  ☠               |
+ ___________________________________ 
+
+1. Play Game
+2. Instructions
+3. View Top 10 Players
+4. Exit Game
+
+Input 1-4 to continue: 3
+Name                Score Difficulty
+John                1939  Easy
+Ken                 1808  Easy
+Ken                 1753  Easy
+John                1655  Easy
+Mary                10    Easy
+Peter               10    Medium
+Sam                 10    Hard
+Mary                10    Easy
+Peter               10    Medium
+Sam                 10    Hard
+
+Bye!
+
