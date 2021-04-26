@@ -344,9 +344,9 @@ void main_page(){
 	}
 
 	else if (option == 2){
-    // display instructions
+		// display instructions
 		printInstructions();
-  }
+	}
 
 	else if (option == 3){
 		// load rank info from rank.txt
