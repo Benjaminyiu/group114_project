@@ -6,11 +6,13 @@ Group nember: Yiu Ka Chun, Oh Seungwoo
 
 Introduction: We have made a classical game called Minesweeper using C++. 
 
-Concept of this game: Puzzle
+Concept of this game: Puzzle style which requires guessing and inferring location of mines.
 
-Motivation (reason for choosing this game): Minesweeper is an almost fully randomized game as the locations of bombs are very likely to be different for each round. Thus, it is easier to meet the code requirement which is "random generation of events". We made the following assumption for inputting coordinates, the user must input two values for x and y to correctly play the game in order to convert it into (x,y) coordinate system. 
+Motivation (reason for choosing this game): Minesweeper is an almost fully randomized game as the locations of bombs are very likely to be different for each round. Thus, it is easier to meet the code requirement which is "random generation of events".
 
-Game Rules: The rule of the game is finding all the mines without detonating by using the number on a block which shows the number of mines adjacent to it. We shall refer to some websites detailing the game instruction, such as https://www.instructables.com/How-to-play-minesweeper/.
+Game Rules: The rule of the game is finding all the mines without detonating by using the number on a block which shows the number of mines adjacent to it. We shall refer to some websites detailing the game instruction, such as https://www.instructables.com/How-to-play-minesweeper/. We made the following assumption for inputting coordinates:
+* the player must input two values for x and y to correctly play the game in order to convert it into (x,y) coordinate system. Only integers are inputted.
+* enter only one word for name input after winning the game.
 
 Features: Depending on the difficulty, there will be more mines in a given field. The number of mines in each game will be determined randomly and different in each game. We offered three difficulty level: easy, medium, and hard. Exposing mines to the player as a random event has been implemented. If player wins the game, he/she will receive a score. Ranking of top 10 players based on their scores is created. Player can check the ranking in the game.
 
@@ -22,6 +24,7 @@ Code requirements:
 5. Program codes in multiple files: The game was divided into several parts to ensure scalability and easier debugging. We divided the program into several parts, i.e. gameplay, instruction, and rank programs. They are compiled together to create an executable file 'game'.
 
 Compilation and execution instructions: Using the bash shell, input 'make game' in the game file directory. Optional input of 'make clean' can remove intermediate object files. Then input './game' to load the game executable.
+
 P.S. To facilitate testing, a test file named cheatboard.txt is generated showing the locations of mines represented by 0. Commenting out lines 241, 250, 256, 259 and 261 in main_page.cpp can remove the generation of cheatboard.txt.
 
 Testing of program and generation of sample input/output files are done in academy11 server. 5 sample input/output files are attached. However, since the output of each gameplay may vary and rely on random factors, it may not be possible to obtain the same output for a given input every time.
