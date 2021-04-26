@@ -264,10 +264,10 @@ void main_page(){
 		srand(time(NULL));
 		while (board[y][x]!= 0 && !win) {
 			int revealOneMine = rand() % 5;	// probability of having special events
-			if (revealOneMine == 0) {					// to reveal one mine = 1/5
+			if (revealOneMine == 0) {				// to reveal one mine = 1/5
 				int i = 0, j = 0;
 				do {
-					int draw = rand() % minmines;					// count the nth bomb location to be revealed
+					int draw = rand() % minmines;		// count the nth bomb location to be revealed
 					int count = 0;
 					for (i = 0; i < size && count < draw; ++i)
 						for (j = 0; j < size && count < draw; ++j)
@@ -280,6 +280,7 @@ void main_page(){
 							}
 				} while (flag[i][j] == 1);				// repeat if flag is already placed
 
+				minmines--;
 				player_board[i][j] = 1;
 				flag[i][j] = 1;
 				cout << "Lucky! The grid (" << j << " " << i << ") has been revealed for you!" << endl;
