@@ -18,30 +18,6 @@ const int size_medium = 16;
 const int size_hard = 20;
 const int highest_score = 2000;
 
-// input: computer's board,
-// count bombs nearby
-int bombnum(int **b, int x, int y) {
-	int tempx = x;
-	int tempy = y;
-	int cnt = 0;
-	for (int i = -1; i < 2; i++) {
-		for (int j = -1; j < 2; j++) {
-			if (i == 0 && j == 0) {
-				continue;
-			}
-			x = tempx;
-			y = tempy;
-
-			x += j;
-			y += i;
-			if (b[y][x] == 0) {
-				cnt++;
-			}
-		}
-	}
-	return cnt;
-}
-
 // input: computer's board, coordinates and size of board
 // assign numbers to each grid according the number of mines in 3X3 neighbouring
 // output: numbers of each grid without bomb
@@ -68,8 +44,6 @@ int numbering(int **b, int x, int y, int size) {
 		}
 	}
 	return cnt;
-
-
 }
 
 // input: computer's and player's boards, vector of flag, size of board
@@ -145,8 +119,6 @@ void scan(int **b, int **p_b, int x, int y, int size) {
 			}
 		}
 	}
-
-
 }
 
 // input: computer's and player's boards, size of board
@@ -163,7 +135,6 @@ bool winning(int **b, int **p_b, int size) {
 		}
 	}
 	return true;
-
 }
 
 void main_page(){
