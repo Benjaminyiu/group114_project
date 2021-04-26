@@ -267,7 +267,7 @@ void main_page(){
 			if (revealOneMine == 0) {					// to reveal one mine = 1/5
 				int i = 0, j = 0;
 				do {
-					int draw = rand() % 10;					// count the nth bomb location to be revealed
+					int draw = rand() % minmines;					// count the nth bomb location to be revealed
 					int count = 0;
 					for (i = 0; i < size && count < draw; ++i)
 						for (j = 0; j < size && count < draw; ++j)
