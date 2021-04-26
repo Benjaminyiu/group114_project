@@ -6,6 +6,10 @@ Group nember: Yiu Ka Chun, Oh Seungwoo
 
 Introduction: We have made a classical game called Minesweeper using C++. 
 
+Concept of this game: Puzzle
+
+Motivation (reason for choosing this game): Minesweeper is an almost fully randomized game as the locations of bombs are very likely to be different for each round. Thus, it is easier to meet the code requirement which is "random generation of events". We made the following assumption for inputting coordinates, the user must input two values for x and y to correctly play the game in order to convert it into (x,y) coordinate system. 
+
 Game Rules: The rule of the game is finding all the mines without detonating by using the number on a block which shows the number of mines adjacent to it. We shall refer to some websites detailing the game instruction, such as https://www.instructables.com/How-to-play-minesweeper/.
 
 Features: Depending on the difficulty, there will be more mines in a given field. The number of mines in each game will be determined randomly and different in each game. We offered three difficulty level: easy, medium, and hard. Exposing mines to the player as a random event has been implemented. If player wins the game, he/she will receive a score. Ranking of top 10 players based on their scores is created. Player can check the ranking in the game.
