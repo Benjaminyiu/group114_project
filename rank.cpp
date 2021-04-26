@@ -7,7 +7,10 @@
 
 using namespace std;
 
+// input: vector record storing the ranking, rank.txt
+// and option (gameplay or display ranking)
 // obtain record from rank.txt
+// output:
 void retrieveRecord(vector < ranking > &record, int option) {
 	int i = 0;
 	string line;
@@ -26,7 +29,9 @@ void retrieveRecord(vector < ranking > &record, int option) {
 	fin.close();
 }
 
+// input: vector record storing the ranking
 // save record to rank.txt
+// output: rank.txt to save ranking permenantly
 void saveRecord(vector < ranking > &record) {
 	ofstream fout ("rank.txt");
 	for (int i = 0; i < 10; i++)

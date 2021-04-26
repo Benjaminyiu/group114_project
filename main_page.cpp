@@ -18,6 +18,7 @@ const int size_medium = 16;
 const int size_hard = 20;
 const int highest_score = 2000;
 
+// input: computer's board,
 // count bombs nearby
 int bombnum(int **b, int x, int y) {
 	int tempx = x;
@@ -41,7 +42,9 @@ int bombnum(int **b, int x, int y) {
 	return cnt;
 }
 
+// input: computer's board, coordinates and size of board
 // assign numbers to each grid according the number of mines in 3X3 neighbouring
+// output: numbers of each grid without bomb
 int numbering(int **b, int x, int y, int size) {
 	int tempx = x;
 	int tempy = y;
@@ -69,9 +72,10 @@ int numbering(int **b, int x, int y, int size) {
 
 }
 
-// print player's board
+// input: computer's and player's boards, vector of flag, size of board
+// output: player's board
 void printBoard(int **b, int **p_b, vector < vector <int> > &flag, int size) {
-	cout << "   ";
+	cout << "   ";											// first line formatting
 	for (int i = 0; i < size; i++) {
 		cout << left << setw(3) << i;
 	}
@@ -79,27 +83,27 @@ void printBoard(int **b, int **p_b, vector < vector <int> > &flag, int size) {
 	for (int i = 0; i < size; i++) {
 		cout << left << setw(3) << i;
 		for (int j = 0; j < size; j++) {
-			if (p_b[i][j] == 1)
+			if (p_b[i][j] == 1)							// the grid is chosen
 
 				if (b[i][j] == 0) {
-					if (flag[i][j] == 1)
+					if (flag[i][j] == 1)				// print a flag
 						cout << left << setw(3) << FLAG << "  ";
-					else
+					else												// print a bomb
 						cout << left << setw(3) << BOMB << "  ";
 				}
-				else {
-							// print bomb numbers
+				else {												// print bomb numbers
 					int bombnum = numbering(b, j, i, size);
 					cout << left << setw(3) << bombnum;
 				}
-			else
+			else														// the grid is not chosen
 				cout << "_  ";
 		}
 		cout << endl;
 	}
 }
 
-// scan nearby tiles and reveal if there is no bomb
+// input: computer's and player's boards, coordinates, size of board
+// output: scan nearby tiles and reveal if there is no bomb
 void scan(int **b, int **p_b, int x, int y, int size) {
 	int tempx = x;
 	int tempy = y;
@@ -145,12 +149,15 @@ void scan(int **b, int **p_b, int x, int y, int size) {
 
 }
 
+// input: computer's and player's boards, size of board
 // check winning conditions
+// output: true if all non-mine grids are chosen, false otherwise
 bool winning(int **b, int **p_b, int size) {
 
 	for (int i = 0; i < size; i++) {
 		for (int j = 0; j < size; j++) {
-			if (b[i][j] == 1 && p_b[i][j] != 1) {
+			if (b[i][j] == 1 && p_b[i][j] != 1) {	// computer's grid has no mine
+																						// and player has not chosen this grid
 				return false;
 			}
 		}
